@@ -1,0 +1,79 @@
+name: Auto Commit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '35 0 12 6 *'
+    - cron: '57 4 12 6 *'
+    - cron: '55 7 12 6 *'
+    - cron: '56 9 12 6 *'
+    - cron: '8 12 12 6 *'
+    - cron: '17 15 12 6 *'
+    - cron: '41 18 12 6 *'
+    - cron: '28 22 12 6 *'
+    - cron: '33 0 13 6 *'
+    - cron: '3 4 13 6 *'
+    - cron: '54 8 13 6 *'
+    - cron: '4 13 13 6 *'
+    - cron: '54 16 13 6 *'
+    - cron: '30 20 13 6 *'
+    - cron: '48 1 14 6 *'
+    - cron: '42 3 14 6 *'
+    - cron: '53 4 14 6 *'
+    - cron: '46 6 14 6 *'
+    - cron: '40 9 14 6 *'
+    - cron: '37 11 14 6 *'
+    - cron: '36 13 14 6 *'
+    - cron: '30 14 14 6 *'
+    - cron: '19 17 14 6 *'
+    - cron: '48 1 15 6 *'
+    - cron: '34 3 15 6 *'
+    - cron: '54 7 15 6 *'
+    - cron: '15 9 15 6 *'
+    - cron: '35 12 15 6 *'
+    - cron: '26 16 15 6 *'
+    - cron: '18 19 15 6 *'
+    - cron: '24 0 16 6 *'
+    - cron: '5 2 16 6 *'
+    - cron: '42 4 16 6 *'
+    - cron: '10 7 16 6 *'
+    - cron: '21 8 16 6 *'
+    - cron: '51 11 16 6 *'
+    - cron: '29 13 16 6 *'
+    - cron: '2 15 16 6 *'
+    - cron: '10 16 16 6 *'
+    - cron: '10 18 16 6 *'
+    - cron: '37 1 17 6 *'
+    - cron: '37 7 17 6 *'
+    - cron: '46 13 17 6 *'
+    - cron: '56 19 17 6 *'
+    - cron: '13 1 18 6 *'
+    - cron: '36 4 18 6 *'
+    - cron: '0 8 18 6 *'
+    - cron: '7 13 18 6 *'
+    - cron: '56 16 18 6 *'
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Set Git Identity
+        run: |
+          git config --global user.name "Harsh Vekariya"
+          git config --global user.email "harshvekariya203@gmail.com"
+
+      - name: Create Single Change
+        run: |
+          node ./auto_commit_script.js
+          git add .
+          git commit -m "Auto commit [$(date -u)]"
+          git push
